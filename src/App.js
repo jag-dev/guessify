@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import "./css/App.css"
+import spotifyLogo from 'C:\\Users\\alecm\\OneDrive\\Desktop\\guessify\\src\\img\\Spotify.jpeg'
 
 function App() {
   const CLIENT_ID = process.env.REACT_APP_CLIENT_ID
@@ -31,17 +33,24 @@ function App() {
   return (
       <div className="App">
           <header className="App-header">
-            <h1>Guessify</h1>
-            <h2>Spotify Guessing Game</h2>
-
+            <div id="Title">
+              <h1>Guessify</h1>
+              <h3>Spotify Guessing Game</h3>
+            </div>
+            
+            <div id="img">
+              <img src={spotifyLogo} alt="Spotify Logo" />
+            </div>
+            
             { !token ?
               <div class="connect-wrapper">
                 <p>Connect your Spotify account to start playing!</p>
-                <a class="connect-btn" href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Play Now</a>
+                <button><a class="connect-btn" href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Play Now</a></button>
               </div>
               :
               <div class="playlist-wrapper">
                 <button onClick={logout}>Logout</button>
+                <button onClick="">Select Playlists</button>
                 <p>Token: {token} </p>
               </div> 
             }
