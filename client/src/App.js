@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./css/App.css"
-import spotifyLogo from 'C:\\Users\\alecm\\OneDrive\\Desktop\\guessify\\src\\img\\Spotify.jpeg'
+import spotifyLogo from './img/Spotify.jpeg'
 
 function App() {
   const CLIENT_ID = process.env.REACT_APP_CLIENT_ID
