@@ -73,3 +73,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 Create .env 
 REACT_APP_CLIENT_ID
+
+npm i nodejs
+npm i axios
+
