@@ -34,3 +34,11 @@
     background-color: #6cb881;
     border: 5px solid #299950;
   }
+
+  @media only screen and (max-width: 600px) {
+    .get-btn {
+      margin-top: 2em;
+      font-size: 1.5em;
+    }
+  }
+  
