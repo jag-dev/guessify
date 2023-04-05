@@ -1,3 +1,18 @@
+* {
+  transition-duration: 0.4s;
+}
+
+.playlist-wrapper {
+  margin: 4em 1em 0em 1em;
+}
+
+.playlist-wrapper h2 {
+  letter-spacing: 2px;
+  padding-bottom: 1em;
+  margin: 0 12em 0 12em;
+  border-bottom: 1px solid grey;
+}
+
 .logout-btn {
     position: fixed;
     display: flex;
@@ -12,33 +27,69 @@
     text-transform: uppercase;
     transition-duration: 0.4s;
   }
-  
-  .playlist-container {
-    margin: 4em 1em 1em;
-  }
 
-  .get-btn {
+  .p-btn {
     background-color: #1DB954;
     color: white;
-    padding: 0.5em 1em;
-    font-size: 46px;
+    padding: 0.5em 2em;
+    font-size: 0.85em;
     margin: 0em 0.5em 1em;
     cursor: pointer;
-    border-radius: 0.25em;
+    border-radius: 30px;
     border: 5px solid #1DB954;
     transition-duration: 0.4s;
-    margin-top: 0.5em
+    letter-spacing: 2px;
   }
 
-  .get-btn:hover {
+  .p-btn:hover {
     background-color: #6cb881;
     border: 5px solid #299950;
   }
 
+  .container {
+    margin-top: 1em;
+  }
+
+  .col {
+    height: 3em;
+  }
+
+  .card {
+    margin: 20px;
+    padding: 25px 15px 15px 15px;
+    background-color: #3d3d49 !important;
+    border-radius: 20px !important;
+    box-shadow: 5px 5px 5px #212127;
+  }
+
+  .card-title {
+    font-size: 0.65em !important;
+    letter-spacing: 2px;
+    margin-top: 0.3em;
+  }
+
+  .card-text {
+    font-size: 0.4em !important;
+    letter-spacing: 2px;
+  }
+
+  .btn-primary {
+    background-color: #1DB954 !important;
+    border: none !important;
+    margin-top: 1em;
+    padding: 0.5em 1.5em 0.5em 1.5em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px;
+    font-weight: 500 !important;
+  }
+
   @media only screen and (max-width: 600px) {
-    .get-btn {
+    .p-btn {
       margin-top: 2em;
       font-size: 1.5em;
+    }
+    .playlist-wrapper h2 {
+      margin: 0;
     }
   }
   
