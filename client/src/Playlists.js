@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-
+import Options from './Options';
 import "./css/Playlists.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -9,8 +9,9 @@ const PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/me/playlists";
 
 function Playlists({accessToken}) {
     const [token, setToken] = useState("");
+    const [playlistId, setPlaylistId] = useState("");
     const [playlistData, setPlaylistData] = useState({});
-    const [viewingPlaylist, setViewingPlatlist] = useState(false);
+    const [viewingPlaylist, setViewingPlaylist] = useState(false);
 
     useEffect(() => {
         setToken(accessToken);
@@ -19,6 +20,7 @@ function Playlists({accessToken}) {
     const logout = () => {
         setToken("");
         setPlaylistData({});
+        setViewingPlaylist(false);
         window.localStorage.removeItem("token");
         window.location.reload(false);
     }
@@ -31,7 +33,14 @@ function Playlists({accessToken}) {
         }).catch((error) => {
             console.log(error);
         });
-        setViewingPlatlist(true);
+        setViewingPlaylist(true);
+    }
+
+    if (playlistId != "") {
+        return(<>
+            <button class="logout-btn lo" onClick={logout}>Logout</button>
+            <Options pid={playlistId}/>
+        </>);
     }
 
     
@@ -53,19 +62,17 @@ function Playlists({accessToken}) {
                                     <div class="card-body">
                                         <h5 class="card-title">{item.name}</h5>
                                         <p class="card-text">{item.tracks.total} Songs</p>
-                                        <a href="#" class="btn btn-primary">Use</a>
+                                        <button onClick={() => setPlaylistId(item.id)} class="btn btn-primary">Use</button>
                                     </div>
                                     
                                 </div>
                             </div>
                         )
-                      : null 
+                        : null 
                     }
                 </div>
-
-                {viewingPlaylist ? <button class="p-btn">CONFIRM</button> : null }
             </div>
-        </div> 
+        </div>         
     );
 }
 

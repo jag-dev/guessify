@@ -3,7 +3,7 @@
 }
 
 .playlist-wrapper {
-  margin: 4em 1em 0em 1em;
+  margin: 4em 1em 1.5em 1em;
 }
 
 .playlist-wrapper h2 {
@@ -28,6 +28,10 @@
     transition-duration: 0.4s;
   }
 
+  .lo {
+    margin-left: 1em !important;
+  }
+
   .p-btn {
     background-color: #1DB954;
     color: white;
@@ -42,8 +46,8 @@
   }
 
   .p-btn:hover {
-    background-color: #6cb881;
-    border: 5px solid #299950;
+    background-color: #247a42;
+    border: 5px solid #247a42;
   }
 
   .container {
@@ -81,6 +85,11 @@
     text-transform: uppercase !important;
     letter-spacing: 2px;
     font-weight: 500 !important;
+  }
+
+  .btn-primary:hover {
+    background-color: #247a42 !important;
+    transition-duration: 0.4s;
   }
 
   @media only screen and (max-width: 600px) {
