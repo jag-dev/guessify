@@ -17,6 +17,7 @@ function GameView() {
 
     
     // button - start game
+    const [gameStarted, setGameStarted] = useState(false);
     const [playerList, setPlayerList] = useState([]);
 
     const data = {
@@ -27,12 +28,24 @@ function GameView() {
 
     const updatePlayers = () => { socket.emit("get_players", code); }
 
-    useEffect(() => { 
+    const readyUp = () => {
+        var rdata = {
+            code: code,
+            name: name,
+        }
+        socket.emit("is_ready", rdata)
+    }
 
+    useEffect(() => { 
         window.addEventListener("popstate", (event) => {
             var ldata = { name: name, code: code }
             socket.emit("leave", ldata);
           });
+
+        window.addEventListener("beforeunload", (event) => {
+            var ldata = { name: name, code: code }
+            socket.emit("leave", ldata);
+        });
 
         updatePlayers();
     })
@@ -41,10 +54,17 @@ function GameView() {
         socket.emit("join_game", data);
         updatePlayers();
  
+        socket.on("failed_join", () => {
+            nav("/");
+        });
+
         socket.on("update_players", (players) => {
-            console.log(players)
             setPlayerList(players);
         }); 
+
+        socket.on("start_game", () => {
+            setGameStarted(true);
+        });
 
     }, [socket]);
 
@@ -56,12 +76,11 @@ function GameView() {
             <h5>Game Code: {code}</h5>
             <br/>
             {playerList.map((player, id) => {
-                return(
-                    <p>Player {id+1}: {player}</p>
-                );
+                return(<p>Player {id+1}: {player}</p>);
             })}
             <br/>
-            <button>Test</button>
+
+            {gameStarted ? <h1>Game on</h1> : <button onClick={readyUp} class="p-btn r-btn">Ready</button> }
 
         </div>
         
