@@ -78,4 +78,5 @@ npm i nodejs
 npm i axios
 npm i bootstrap
 npm i react-router-dom
+npm i socket.io-client
 
