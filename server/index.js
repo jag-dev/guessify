@@ -49,6 +49,7 @@ io.on("connection", (socket) => {
         
 
         console.log(`Joined Game: ${data.name} with id ${socket.id} score of ${games.get(data.code).scores.get(data.name)}`)
+        console.log(games.get(data.code).ids.size)
 
         socket.to(data.code).emit("update_players", Array.from(games.get(data.code).scores.keys()));
     });
@@ -66,7 +67,14 @@ io.on("connection", (socket) => {
             console.log(`Left: ${data.name}`);
 
             socket.to(data.code).emit("update_players", Array.from(games.get(data.code).scores.keys()));
+
+            // if game has no players in it
+        if (games.get(data.code).ids.size <= 0) {
+            games.get(data.code).scores.clear();
+            games.get(data.code).ids.clear();
         }
+        }
+
         
     });
 
@@ -75,11 +83,10 @@ io.on("connection", (socket) => {
         [...games.keys()].map(code => [...games.get(code).ids.keys()].map(player => {
             // removes player from ids map
             // keeps them in score
-            games.get(code).ids.delete(player);
-
+            if (games.get(code).ids.get(player) == socket.id) games.get(code).ids.delete(player);
+            
             // if game has no players in it
             if (games.get(code).ids.size <= 0) {
-
                 games.get(code).scores.clear();
                 games.get(code).ids.clear();
             }
