@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/Join.css";
 
-function Join({pid}) {
+function Join({name, pid}) {
     const nav = useNavigate();
 
     const handleSubmit = (event) => {
@@ -12,6 +12,7 @@ function Join({pid}) {
         nav("/game", {
             state: {
                playlistId: pid,
+               name: name,
                gameCode: event.target.username.value
             }
         });

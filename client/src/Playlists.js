@@ -9,6 +9,7 @@ const PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/me/playlists";
 
 function Playlists({accessToken}) {
     const [token, setToken] = useState("");
+    const [name, setName] = useState("");
     const [playlistId, setPlaylistId] = useState("");
     const [playlistData, setPlaylistData] = useState({});
     const [viewingPlaylist, setViewingPlaylist] = useState(false);
@@ -36,10 +37,17 @@ function Playlists({accessToken}) {
         setViewingPlaylist(true);
     }
 
+    const handleName = (event) => {
+        event.preventDefault();
+        console.log(event.target.username.value)
+        setName(event.target.username.value);
+        getPlaylists();
+    }
+
     if (playlistId != "") {
         return(<>
             <button class="logout-btn lo" onClick={logout}>Logout</button>
-            <Options pid={playlistId}/>
+            <Options name={name} pid={playlistId}/>
         </>);
     }
 
@@ -50,7 +58,13 @@ function Playlists({accessToken}) {
             {viewingPlaylist ? 
                 <h2>Select Playlists</h2>
                 :
-                <button class="p-btn" onClick={getPlaylists}>Pick Playlists</button> 
+                <form onSubmit={handleName}>
+                    <h3>Enter a Name</h3>
+                    <input class="j-input" type="text" name="username"/>
+                    <br/>
+                    <button class="p-btn" type="submit">Pick Playlists</button> 
+                </form>
+                
             }
             <div class="container">
                 <div class="row">
