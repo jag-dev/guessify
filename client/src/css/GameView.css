@@ -1,0 +1,14 @@
+.p-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.p-wrapper p {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    height: 100%;
+    margin: 0;
+    margin-right: 1em;
+}

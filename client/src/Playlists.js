@@ -47,7 +47,7 @@ function Playlists({accessToken}) {
     if (playlistId != "") {
         return(<>
             <button class="logout-btn lo" onClick={logout}>Logout</button>
-            <Options name={name} pid={playlistId}/>
+            <Options name={name} pid={playlistId} token={token}/>
         </>);
     }
 

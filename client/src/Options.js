@@ -5,11 +5,11 @@ import Create from './Create';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/Options.css";
 
-function Options({name, pid}) {
+function Options({name, pid, token}) {
     const [choice, setChoice] = useState("");
 
-    if (choice == "create") { return(<Create name={name} pid={pid}/>); }
-    if (choice == "join") { return(<Join name={name} pid={pid}/>); }
+    if (choice == "create") { return(<Create name={name} pid={pid} token={token}/>); }
+    if (choice == "join") { return(<Join name={name} pid={pid} token={token}/>); }
 
 
     return(<>

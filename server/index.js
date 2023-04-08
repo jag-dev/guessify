@@ -19,8 +19,11 @@ const metadata = {
     ids: new Map(), // name, id
     scores: new Map(), // name, score
     ready: new Map(), // name, boolean
-    rounds: 5,
     isStarted: false,
+    currentRound: 1,
+    currentPick: "", // player name
+    rounds: 5,
+    roundVotes: 0,
 };
 
 games.set("test", metadata);
@@ -48,7 +51,10 @@ io.on("connection", (socket) => {
                 games.get(data.code).scores.delete(data.name);
                 games.get(data.code).ready.delete(data.name);
 
-            } else { games.get(data.code).ids.set(data.name, socket.id); }
+            } else { 
+                games.get(data.code).ids.set(data.name, socket.id);
+                games.get(data.code).scores.set(data.name, 0);
+             }
         } else {
             // first join
             if (games.get(data.code).isStarted) { 
@@ -66,12 +72,18 @@ io.on("connection", (socket) => {
 
         console.log(`Joined Game: ${data.name} with id ${socket.id} score of ${games.get(data.code).scores.get(data.name)}`)
 
-        io.to(data.code).emit("update_players", Array.from(games.get(data.code).scores.keys()));
+        const gdata = { scores: Array.from(games.get(data.code).scores), round: games.get(data.code).currentRound }
+        io.to(data.code).emit("update_info", gdata);
     });
 
     // Get current players in a game 
     socket.on("get_players", (gameCode) => { 
-        socket.to(gameCode).emit("update_players", Array.from(games.get(gameCode).scores.keys()));
+        //const players = Array.from(games.get(gameCode).scores.keys());
+
+        // array of arrays
+        //console.log(Array.from(games.get(gameCode).scores));
+        const gdata = { scores: Array.from(games.get(gameCode).scores), round: games.get(gameCode).currentRound }
+        socket.to(gameCode).emit("update_info", gdata);
     }); 
 
     // Player is ready
@@ -90,8 +102,50 @@ io.on("connection", (socket) => {
             io.to(data.code).emit("start_game");
 
             // play it, allow them to vote
-            console.log(`Started ${games.get(data.code).isStarted}`)
+
+            // start of game []
+            // pick player
+            // asks for song
+            // song comes back
+            // use song to send out round to all players
+            // collect votes (like readys)
+            // when final vote cast handle win, pick new player
+
+            var list = games.get(data.code).ids;
+            var randomName = Array.from(list.keys())[Math.floor(Math.random() * list.size)];
+
+
+            io.to(games.get(data.code).ids.get(randomName)).emit("picked");
+            games.get(data.code).currentPick = randomName;
+
+            console.log(`Started ${games.get(data.code).isStarted}`);
         }
+    });
+
+    socket.on("give_track", (data) => {
+        io.to(data.code).emit("play_round", data.track);
+    });
+
+    socket.on("submit_vote", (data) => {
+        games.get(data.code).roundVotes = games.get(data.code).roundVotes+1; 
+        if (data.vote == games.get(data.code).currentPick) {
+            // guessed right
+            games.get(data.code).scores.set(data.name, (games.get(data.code).scores.get(data.name)+1));
+        }
+
+        if (games.get(data.code).roundVotes == games.get(data.code).ids.size) {
+            // all have voted
+
+            var list = games.get(data.code).ids;
+            var randomName = Array.from(list.keys())[Math.floor(Math.random() * list.size)];
+
+            io.to(games.get(data.code).ids.get(randomName)).emit("picked");
+            io.to(data.code).emit("new_round");
+            games.get(data.code).currentPick = randomName;
+            games.get(data.code).currentRound = games.get(data.code).currentRound+1; 
+            games.get(data.code).roundVotes = 0;
+        }
+
     });
 
     // Player leaves game
@@ -101,13 +155,15 @@ io.on("connection", (socket) => {
             games.get(data.code).scores.delete(data.name);
             console.log(`Left: ${data.name}`);
 
-            socket.to(data.code).emit("update_players", Array.from(games.get(data.code).scores.keys()));
+            const gdata = { scores: Array.from(games.get(data.code).scores), round: games.get(data.code).currentRound }
+            socket.to(data.code).emit("update_players", gdata);
 
             // if game has no players in it
             if (games.get(data.code).ids.size <= 0) {
                 games.get(data.code).scores.clear();
                 games.get(data.code).ids.clear();
                 games.get(data.code).ready.clear();
+                games.get(data.code).isStarted = false;
             }
         }
 
@@ -126,6 +182,7 @@ io.on("connection", (socket) => {
                 games.get(code).scores.clear();
                 games.get(code).ids.clear();
                 games.get(code).ready.clear();
+                games.get(code).isStarted = false;
             }
         
         }));
