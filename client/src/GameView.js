@@ -21,7 +21,9 @@ function GameView() {
     
     // button - start game
     const [gameStarted, setGameStarted] = useState(false);
+    const [isFinished, setIsFinished] = useState(false);
     const [playerList, setPlayerList] = useState([]);
+    const [leaderboard, setLeaderboard] = useState([]);
     const [currentTrack, setCurrentTrack] = useState("");
     const [hasVoted, setHasVoted] = useState(false);
     const [votedFor, setVotedFor] = useState("");
@@ -87,6 +89,7 @@ function GameView() {
 
         socket.on("start_game", () => {
             setGameStarted(true);
+            setIsFinished(false);
 
             var rdata = { name: name, code: code }
             socket.emit("req_round", rdata);
@@ -120,6 +123,14 @@ function GameView() {
             setHasVoted(false);
         });
 
+        socket.on("end_game", (scores) => {
+            const board = scores.sort((a, b) => b[1] - a[1]);
+            
+            setLeaderboard(board);
+            setGameStarted(false);
+            setIsFinished(true);
+        });
+
     }, [socket]);
 
     if (!loc.state) return <Navigate to="/"/>
@@ -130,6 +141,7 @@ function GameView() {
             <h5>Game Code: {code}</h5>
             <br/>
                 {playerList.map(([player, score]) => {
+                    if (isFinished) { return(<></>); }
                     if (playerList.length == 1) { return(<p>Waiting for players...</p>)}
 
                     return(
@@ -157,7 +169,25 @@ function GameView() {
                 </>
                 
             :
-                <button onClick={readyUp} class="p-btn r-btn">Ready</button> 
+            <>
+                { isFinished ? null : <button onClick={readyUp} class="p-btn r-btn">Ready</button> }
+            </>
+                
+            }
+
+            { isFinished ? 
+                <>
+                    <h1>Leaderboard</h1>
+                    <hr/>
+                    {leaderboard.map(([player, score]) => (
+                        <div class="p-wrapper">
+                            <p>Player: {player} Score: {score}</p>
+                        </div>
+                    ))}
+                    <button class="p-btn r-btn">Play Again</button>
+                </>
+            :
+                <></>
             }
 
         </div>

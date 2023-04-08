@@ -22,18 +22,12 @@ const metadata = {
     isStarted: false,
     currentRound: 1,
     currentPick: "", // player name
-    rounds: 5,
+    maxRounds: 5,
+    winningScore: 3,
     roundVotes: 0,
 };
 
 games.set("test", metadata);
-
-function getByValue(map, searchValue) {
-    for (let [key, value] of map.entries()) {
-      if (value === searchValue)
-        return key;
-    }
-  }
 
 io.on("connection", (socket) => {
     console.log(`Connected: ${socket.id}`);
@@ -78,10 +72,6 @@ io.on("connection", (socket) => {
 
     // Get current players in a game 
     socket.on("get_players", (gameCode) => { 
-        //const players = Array.from(games.get(gameCode).scores.keys());
-
-        // array of arrays
-        //console.log(Array.from(games.get(gameCode).scores));
         const gdata = { scores: Array.from(games.get(gameCode).scores), round: games.get(gameCode).currentRound }
         socket.to(gameCode).emit("update_info", gdata);
     }); 
@@ -135,6 +125,20 @@ io.on("connection", (socket) => {
 
         if (games.get(data.code).roundVotes == games.get(data.code).ids.size) {
             // all have voted
+
+            for (let [key, value] of games.get(data.code).scores) {
+                if (value === games.get(data.code).winningScore) {
+                    // reached end game (winning score)
+                    io.to(data.code).emit("end_game", Array.from(games.get(data.code).scores));
+                    return;
+                }
+            }
+
+            if ((games.get(data.code).currentRound == games.get(data.code).maxRounds)) {
+                // reached end game (max rounds)
+                io.to(data.code).emit("end_game", Array.from(games.get(data.code).scores));
+                return;
+            }
 
             var list = games.get(data.code).ids;
             var randomName = Array.from(list.keys())[Math.floor(Math.random() * list.size)];
