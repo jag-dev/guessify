@@ -22,9 +22,12 @@ const metadata = {
     isStarted: false,
     currentRound: 1,
     currentPick: "", // player name
-    maxRounds: 5,
-    winningScore: 3,
     roundVotes: 0,
+    
+    maxRounds: 5,
+    maxPlayers: 2,
+    winningScore: 3,
+    
 };
 
 games.set("test", metadata);
@@ -61,8 +64,6 @@ io.on("connection", (socket) => {
 
             
         }
-         
-        
 
         console.log(`Joined Game: ${data.name} with id ${socket.id} score of ${games.get(data.code).scores.get(data.name)}`)
 
@@ -179,7 +180,11 @@ io.on("connection", (socket) => {
         [...games.keys()].map(code => [...games.get(code).ids.keys()].map(player => {
             // removes player from ids map
             // keeps them in score
-            if (games.get(code).ids.get(player) == socket.id) games.get(code).ids.delete(player);
+            if (games.get(code).ids.get(player) == socket.id) { 
+                games.get(code).ids.delete(player);
+                games.get(code).scores.delete(player);
+
+            }
             
             // if game has no players in it
             if (games.get(code).ids.size <= 0) {

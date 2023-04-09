@@ -19,8 +19,9 @@ function Join({name, pid, token}) {
         });
     }
     return(<>
-        <div class="container">
+        <div class="container j-container">
             <h1>Enter a Join Code</h1>
+            <p>A unique code used to join a specific game</p>
             <form onSubmit={handleSubmit}>
                 <input class="j-input" type="text" name="username"/>
                 <br/>

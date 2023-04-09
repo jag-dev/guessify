@@ -54,6 +54,11 @@ function GameView() {
         }
     }
 
+    const playAgain = () => {
+        socket.emit("leave", {name: name, code: code});
+        nav("/");
+    }
+
     useEffect(() => { 
         window.addEventListener("popstate", (event) => {
             var ldata = { name: name, code: code }
@@ -184,7 +189,7 @@ function GameView() {
                             <p>Player: {player} Score: {score}</p>
                         </div>
                     ))}
-                    <button class="p-btn r-btn">Play Again</button>
+                    <button onClick={playAgain} class="p-btn r-btn">Play Again</button>
                 </>
             :
                 <></>

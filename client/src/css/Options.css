@@ -1,3 +1,15 @@
+.o-container h1 {
+    letter-spacing: 3px;
+}
+
+.o-container p {
+    font-size: 0.75em;
+    color: lightgrey;
+    letter-spacing: 2px;
+}
+
 .o-btn {
-    margin: 1em;
+    margin: 2em 1em 0 1em;
+    text-transform: uppercase;
+    letter-spacing: 2px !important;
 }

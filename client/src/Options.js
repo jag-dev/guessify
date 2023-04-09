@@ -13,7 +13,9 @@ function Options({name, pid, token}) {
 
 
     return(<>
-        <div class="container" style={{marginTop: 3 + 'em'}}>
+        <div class="container o-container">
+            <h1>Select an Option</h1>
+            <p>Join or create a new game</p>
             <button onClick={() => setChoice("create")} class="p-btn o-btn">Create</button>
             <button onClick={() => setChoice("join")} class="p-btn o-btn">Join</button>
         </div>

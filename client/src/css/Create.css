@@ -1,0 +1,72 @@
+.c-container {
+    width: 35vw;
+}
+
+.c-container input {
+    width: 100%;
+    padding: 0.5em 1em 0.5em 1em;
+    font-size: 0.7em;
+    border-radius: 30px;
+}
+
+.c-container .form-group label {
+    float: left !important;
+    margin: 1.2em 0 0.5em 0.5em;
+    font-size: 0.75em;
+    letter-spacing: 2px;
+}
+
+.c-container .form-group p {
+    float: right !important;
+    margin-bottom: 0.5em;
+    margin-right: 0.5em;
+    font-size: 0.55em;
+    color: lightgrey;
+    letter-spacing: 1px;
+}
+
+.c-container h1 {
+    letter-spacing: 3px;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.sub-label {
+    font-size: 0.75em;
+    color: lightgrey;
+    margin-left: 0.3em;
+}
+
+.c-btn {
+    margin: 3em !important;
+    font-size: 0.7em;
+    color: white;
+    border-radius: 30px;
+}
+
+#gc label {
+    float: none !important;
+    margin-bottom: 0;
+}
+
+#gc p {
+    float: none !important;
+    margin: 0 0 1.5em 0;
+}
+
+
+@media only screen and (max-width: 1450px) {
+    .c-container {
+        width: 50vw;
+    }
+}
+@media only screen and (max-width: 1200px) {
+    .sub-label, .c-container .form-group p {
+        display: none;
+    }
+
+    .c-container .form-group label, #gc label {
+        float: none !important;
+        margin-bottom: 1em;
+    }
+  }
