@@ -152,9 +152,7 @@ function GameView() {
                     return(
                         <div class="p-wrapper">
                             
-                            <p>{player}'s Score: </p>
-                            <br />
-                            <p>{score}</p>
+                            <p>{player}'s Score: {score}</p>
                             
                             {gameStarted ? 
                                 <button onClick={() => voteUser(player)} class="v-btn">
@@ -188,9 +186,11 @@ function GameView() {
                     <hr/>
                     {leaderboard.map(([player, score]) => (
                         <div class="p-wrapper">
-                            <p>{player} 's Score: {score}</p>
+                            <p>{player}{player.endsWith('s') ? "'" : "'s"} Score: {score}</p>
                         </div>
                     ))}
+
+
                     <button onClick={playAgain} class="p-btn r-btn">Play Again</button>
                 </>
             :
