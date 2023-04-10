@@ -141,9 +141,9 @@ function GameView() {
     if (!loc.state) return <Navigate to="/"/>
     
     return(<>
-        <div class="container">
-            <h1>Game View</h1>
-            <h5>Game Code: {code}</h5>
+        <div class="container" id="view">
+            {/* <h1>Game View</h1> */}
+            <h1>Game Code: {code}</h1>
             <br/>
                 {playerList.map(([player, score]) => {
                     if (isFinished) { return(<></>); }
@@ -152,7 +152,9 @@ function GameView() {
                     return(
                         <div class="p-wrapper">
                             
-                            <p>Player: {player} Score: {score}</p>
+                            <p>{player}'s Score: </p>
+                            <br />
+                            <p>{score}</p>
                             
                             {gameStarted ? 
                                 <button onClick={() => voteUser(player)} class="v-btn">
@@ -186,7 +188,7 @@ function GameView() {
                     <hr/>
                     {leaderboard.map(([player, score]) => (
                         <div class="p-wrapper">
-                            <p>Player: {player} Score: {score}</p>
+                            <p>{player} 's Score: {score}</p>
                         </div>
                     ))}
                     <button onClick={playAgain} class="p-btn r-btn">Play Again</button>
