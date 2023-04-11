@@ -1,24 +1,59 @@
 body {
-    background-color: #3d3d49;
+    background-color: #282c34;
 }
 
-h1 {
+.g-container {
+    width: 100vw !important;
+}
 
+.g-container h2 {
+    margin-bottom: 1.5em;
+    letter-spacing: 5px;
 }
 
 .p-wrapper {
     display: flex;
     align-items: center;
-    margin-bottom: 1em;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 0.5em;
+    padding: 0.5em 0.6em 0.5em 0;
+    border-radius: 3em;
+    background-color: #30343d;
+    box-shadow: 2px 2px 5px #000;
 }
 
 .p-wrapper p {
-    display: flex;
-    align-items: center;
-    line-height: 1;
-    height: 100%;
-    margin: 0;
-    margin-right: 1em;
+    font-size: 0.4em;
+    width: 20vw;
+    letter-spacing: 2px;
+}
+
+.p-player {
+    font-weight: 600;
+    letter-spacing: 3px !important;
+    padding-left: 1em;
+}
+
+.p-score {
+    color: lightgrey;
+    padding: 0 1em 0 1em;
+}
+
+.p-score span {
+    font-weight: 500;
+}
+
+.p-player, .p-score {
+    width: 10vw !important;
+    margin-bottom: 0;
+}
+
+.wait {
+    font-size: 0.5em;
+    letter-spacing: 3px;
+    color: lightgrey;
 }
 
 #view {
@@ -31,32 +66,107 @@ h1 {
     font-size: 3em;
 }
 
-.p-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    width: 100%;
+.l-btn {
+    background-color: #282c34;
+    border: none;
+    color: lightgrey;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 0.5em
 }
 
-.v-btn,
-.p-btn.r-btn {
-    font-size: 1.2em;
-    padding: 10px 20px;
-    margin-top: 10px;
+.l-btn:hover {
+    color: rgb(253, 103, 103);
 }
 
 .v-btn {
-    margin: 1em 1em 1em;
-    border-radius: 0.5em;
-    background-color: #1DB954;
-    border: none;   
+    border: none;
+    font-size: 0.4em;
     color: white;
-    font-size: smaller;
-
+    background-color: #1DB954;
+    padding: 0.4em 1.5em 0.4em 1.5em;
+    border-radius: 3em;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 500;
+    margin-left: 1em;
+    margin-right: 2em;
 }
 
-.v-btn.clicked {
-    background-color: #007bff;
-    color: #fff;
+.r-btn {
+    font-size: 0.75em;
+    padding: 0.3em 1em 0.3em 1em;
+    transition: all 0.4s ease !important;
 }
+
+.r-btn:hover {
+    box-shadow: 2px 2px 5px #141516;
+}
+
+.r-btn:active,
+.r-btn:focus {
+  background-color: #247a42;
+  border: none;
+  font-size: 0.72em;
+  transition: all 0.4s ease !important;
+}
+
+.m-section h1 {
+    margin: 1em 0 0.5em 0;
+    letter-spacing: 3px;
+    font-weight: 700;
+    font-size: 0.75em;
+}
+
+.m-section hr {
+    text-align: center;
+    width: 5vw;
+}
+
+.m-section p {
+    margin: 0;
+    font-size: 0.6em;
+    letter-spacing: 3px;
+    color: #aeffae;
+}
+
+.m-section p:hover {
+    cursor: pointer;
+}
+
+.m-section svg {
+    margin-left: 0.5em;
+}
+
+.m-section h5 {
+    font-size: 0.55em;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    margin-top: 1em;
+}
+
+.r-section h1 {
+    letter-spacing: 3px;
+}
+.r-section h3 {
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: lightgrey;
+}
+
+.r-section img {
+    width: 10vw;
+    margin: 1em 0 1em 0;
+}
+
+@media only screen and (max-width: 600px) {
+    .p-wrapper p {
+        width: auto !important;
+        margin: 1em;
+    }
+
+    .p-score {
+        width: 5vw !important;
+        padding: 0;
+    }
+  }

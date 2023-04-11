@@ -81,3 +81,8 @@ npm i react-router-dom
 npm i socket.io-client
 npm i react-spotify-embed
 
+npm i --save @fortawesome/fontawesome-svg-core
+npm install --save @fortawesome/free-solid-svg-icons
+npm install --save @fortawesome/react-fontawesome
+
+

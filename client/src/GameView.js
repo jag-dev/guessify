@@ -3,6 +3,10 @@ import { Navigate, useNavigate, useLocation } from 'react-router-dom';
 import io from "socket.io-client";
 import axios from "axios";
 import { Spotify }  from "react-spotify-embed";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+
+import spotifyLogo from './img/Spotify.jpeg';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/GameView.css";
@@ -35,6 +39,20 @@ function GameView() {
         playlistId: pid,
     }
 
+    const leaveGame = () => {
+        socket.emit("leave", {name: name, code: code});
+        setGameStarted(false);
+        setIsFinished(false);
+        setPlayerList([]);
+        setLeaderboard([]);
+        setCurrentTrack("");
+        setHasVoted(false);
+        setVotedFor("")
+        setRound(0);
+        setCode("");
+        nav("/");
+    }
+
     const updatePlayers = () => { socket.emit("get_players", code); }
 
     const readyUp = () => {
@@ -59,16 +77,22 @@ function GameView() {
         nav("/");
     }
 
+    const copyGameCode = async () => {
+        try {
+          await navigator.clipboard.writeText(code);
+        } catch (err) { console.error('Failed to copy game code ', err); }
+      };
+
     useEffect(() => { 
         window.addEventListener("popstate", (event) => {
             var ldata = { name: name, code: code }
             socket.emit("leave", ldata);
           });
 
-        window.addEventListener("beforeunload", (event) => {
-            var ldata = { name: name, code: code }
-            socket.emit("leave", ldata);
-        });
+        // window.addEventListener("beforeunload", (event) => {
+        //     var ldata = { name: name, code: code }
+        //     socket.emit("leave", ldata);
+        // });
 
         updatePlayers();
 
@@ -141,61 +165,114 @@ function GameView() {
     if (!loc.state) return <Navigate to="/"/>
     
     return(<>
-        <div class="container" id="view">
+        <div class="container-fluid g-container" id="view">
+            <div class="row">
+                <div class="col-md-4 l-section">
+                { isFinished ? 
+                            <>
+                                <h1>Leaderboard</h1>
+                                <hr/>
+                                { leaderboard.map(([player, score]) => (
+                                    <div class="p-wrapper">
+                                        <p>{player}{player.endsWith('s') ? "'" : "'s"} Score: {score}</p>
+                                    </div>
+                                )) }
+    
+    
+                                <button onClick={playAgain} class="p-btn">Play Again</button>
+                            </>
+                        :
+                            <>
+                                <h2>Current Players</h2>
+                                {playerList.map(([player, score]) => {
+                                    if (isFinished) { return(<></>); }
+                                    if (playerList.length == 1) { return(<p class="wait">Waiting for players...</p>)}
+
+                                    return(
+                                        <div class="p-wrapper">
+                                        <p class="p-player">{player}</p>
+                                            
+                                        
+                                            { gameStarted ? 
+                                            <>
+                                                <p class="p-score">Score <span>{score}</span> </p>
+                                                <button onClick={() => voteUser(player)} class="v-btn">
+                                                    { votedFor === player ? "Voted For" : "Vote" }
+                                                </button> 
+                                                
+                                            </>
+                                            
+                                            : null }
+                                        
+                                        </div>
+                                    );
+                                })}
+                            </>
+                    }
+
+                </div>
+                <div class="col-md-4 m-section">
+                    { gameStarted ? 
+                        <>
+                            <Spotify link={"https://open.spotify.com/track/" + currentTrack +  ""} />
+                            <h5>Round {round}</h5>
+                        </>
+                        
+                    :
+                        <>
+                            { isFinished ? null : <button onClick={readyUp} class="p-btn r-btn">Ready</button> }
+                            <h1>Game Code</h1>
+                            <p onClick={copyGameCode}>{code}<FontAwesomeIcon icon={faCopy} /></p>
+                        </>
+                        
+                    }
+                </div>
+                <div class="col-md-4 r-section">
+                    <h1>Guessify</h1>
+                    <h3>
+                        {gameStarted ? "Vote for who the currently queued song belongs to" : "Wait for everyone to join and ready up" }
+                        
+                        
+                    </h3>
+                    <img src={spotifyLogo} alt="Spotify Logo" />
+                    
+                    { gameStarted ? 
+                    <>
+                        { isFinished ? 
+                            <>
+                                <h1>Leaderboard</h1>
+                                <hr/>
+                                { leaderboard.map(([player, score]) => (
+                                    <div class="p-wrapper">
+                                        <p>{player}{player.endsWith('s') ? "'" : "'s"} Score: {score}</p>
+                                    </div>
+                                )) }
+    
+    
+                                <button onClick={playAgain} class="p-btn">Play Again</button>
+                            </>
+                        :
+                            <>
+                            
+                                
+                            </>
+                        }
+                    </>
+                        
+                    : null }
+
+                    <button onClick={leaveGame} class="l-btn">Leave Game</button>
+                    
+                </div>
+            </div>
             {/* <h1>Game View</h1> */}
-            <h1>Game Code: {code}</h1>
-            <br/>
-                {playerList.map(([player, score]) => {
-                    if (isFinished) { return(<></>); }
-                    if (playerList.length == 1) { return(<p>Waiting for players...</p>)}
+            
 
-                    return(
-                        <div class="p-wrapper">
-                            
-                            <p>{player}'s Score: {score}</p>
-                            
-                            {gameStarted ? 
-                                <button onClick={() => voteUser(player)} class="v-btn">
-                                    { votedFor === player ? "Voted For" : "Vote" }
-                                </button> 
-                            : null }
-                            
-                        </div>
-                    );
-                })}
             <br/>
 
-            { gameStarted ? 
-                <>
-                    <h1>Started Game</h1> 
-                    <h5>Current Round: {round}</h5>
-                    <p>{votedFor}</p>
-                    <Spotify wide link={"https://open.spotify.com/track/" + currentTrack +  ""} />
-                </>
                 
-            :
-            <>
-                { isFinished ? null : <button onClick={readyUp} class="p-btn r-btn">Ready</button> }
-            </>
-                
-            }
 
-            { isFinished ? 
-                <>
-                    <h1>Leaderboard</h1>
-                    <hr/>
-                    {leaderboard.map(([player, score]) => (
-                        <div class="p-wrapper">
-                            <p>{player}{player.endsWith('s') ? "'" : "'s"} Score: {score}</p>
-                        </div>
-                    ))}
-
-
-                    <button onClick={playAgain} class="p-btn r-btn">Play Again</button>
-                </>
-            :
-                <></>
-            }
+            <br/>
 
         </div>
         

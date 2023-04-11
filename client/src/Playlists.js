@@ -72,7 +72,7 @@ function Playlists({accessToken}) {
                         playlistData.items.map((item, i) => 
                             <div class="col-sm-3">
                                 <div class="card">
-                                    {/* <img class="card-img-top" src={item.images[1].url}></img> */}
+                                    <img class="card-img-top" src={item.images[0].url}></img>
                                     <div class="card-body">
                                         <h5 class="card-title">{item.name}</h5>
                                         <p class="card-text">{item.tracks.total} Songs</p>
