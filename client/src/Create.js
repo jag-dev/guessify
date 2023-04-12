@@ -1,16 +1,44 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/Create.css";
+
+
 
 function Create({name, pid, token}) {
     const [maxRounds, setMaxRounds] = useState('');
     const [maxPlayers, setMaxPlayers] = useState('');
     const [winScore, setWinScore] = useState('');
     const [gameCode, setGameCode] = useState('');
+
+    const nav = useNavigate();
+    
   
     const handleSubmit = (event) => {
       event.preventDefault();
+      
+      const socket = io.connect("http://localhost:3001");
+
+      socket.emit("create_game", {name: name, 
+                                  code: gameCode, 
+                                  rounds: maxRounds,
+                                  players: maxPlayers,
+                                  score: winScore}, 
+                                  (resp) => {
+                                    if (resp) {
+                                      nav("/game", {
+                                        state: {
+                                           playlistId: pid,
+                                           token: token,
+                                           name: name,
+                                           gameCode: gameCode
+                                        }
+                                      });
+                                    } else { alert("Game code already in use"); }
+                                  });
+
       console.log(maxRounds, maxPlayers, winScore, gameCode);
     }
   

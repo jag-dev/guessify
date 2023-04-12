@@ -16,15 +16,20 @@ const socket = io.connect("http://localhost:3001");
 function GameView() {
     const nav = useNavigate();
     const loc = useLocation();
-
+    
+    
+    
+    
+    // User states
     const [pid, setPID] = useState(loc.state ? loc.state.playlistId : "")
     const [token, setToken] = useState(loc.state ? loc.state.token : "")
     const [code, setCode] = useState(loc.state ? loc.state.gameCode : "")
     const [name, setName] = useState(loc.state ? loc.state.name : "")
 
     
-    // button - start game
+    // Game states
     const [gameStarted, setGameStarted] = useState(false);
+    const [inGame, setInGame] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
     const [playerList, setPlayerList] = useState([]);
     const [leaderboard, setLeaderboard] = useState([]);
@@ -32,12 +37,6 @@ function GameView() {
     const [hasVoted, setHasVoted] = useState(false);
     const [votedFor, setVotedFor] = useState("");
     const [round, setRound] = useState(0);
-
-    const data = {
-        code: code,
-        name: name,
-        playlistId: pid,
-    }
 
     const leaveGame = () => {
         socket.emit("leave", {name: name, code: code});
@@ -53,7 +52,7 @@ function GameView() {
         nav("/");
     }
 
-    const updatePlayers = () => { socket.emit("get_players", code); }
+    const updatePlayers = () => { if (inGame) { socket.emit("get_players", code); } }
 
     const readyUp = () => {
         var rdata = {
@@ -89,10 +88,10 @@ function GameView() {
             socket.emit("leave", ldata);
           });
 
-        // window.addEventListener("beforeunload", (event) => {
-        //     var ldata = { name: name, code: code }
-        //     socket.emit("leave", ldata);
-        // });
+        window.addEventListener("beforeunload", (event) => {
+            var ldata = { name: name, code: code }
+            socket.emit("leave", ldata);
+        });
 
         updatePlayers();
 
@@ -104,12 +103,16 @@ function GameView() {
     })
 
     useEffect(() => {
-        socket.emit("join_game", data);
-        updatePlayers();
- 
-        socket.on("failed_join", () => {
-            nav("/");
+        socket.emit("join_game", {code: code, name: name, playlistId: pid}, (resp) => {
+            if (resp.joined) { setInGame(true);} 
+            else {
+                setInGame(false);
+                alert(`Unable to join game (${resp.reason})`)
+                nav("/");
+            }
         });
+
+        updatePlayers();
 
         socket.on("update_info", (data) => {
             setRound(data.round);
@@ -257,14 +260,6 @@ function GameView() {
                     
                 </div>
             </div>
-            {/* <h1>Game View</h1> */}
-            
-
-            <br/>
-
-                
-
-            <br/>
 
         </div>
         
