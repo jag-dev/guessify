@@ -7,7 +7,7 @@ Guessify is a web-based game application built with React and NodeJS. Users can 
 Interfacing with Spotify's services and API allows for optimal user experience and ease of access.
 
 <p align="center">
-    <img src="img/spotify.jpeg" style="height: 25vh">
+    <img src="img/spotify.jpeg" height="250">
 </p>
 
 # System Architecture
