@@ -23,7 +23,6 @@ The following diagram demonstrates this architecture flow while depicting the fr
 # Installation
 Proper installation instructions will be provided in the respective client and server directory README files. 
 
-<br/> 
 
 # References
 https://developer.spotify.com/documentation/web-api/
