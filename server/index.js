@@ -169,6 +169,9 @@ io.on("connection", (socket) => {
                 games.get(data.code).ids.clear();
                 games.get(data.code).ready.clear();
                 games.get(data.code).isStarted = false;
+                games.get(data.code).currentRound = 1;
+                games.get(data.code).currentPick = "";
+                games.get(data.code).roundVotes = 0;
             }
         }
 
@@ -188,10 +191,13 @@ io.on("connection", (socket) => {
             
             // if game has no players in it
             if (games.get(code).ids.size <= 0) {
-                games.get(code).scores.clear();
-                games.get(code).ids.clear();
-                games.get(code).ready.clear();
-                games.get(code).isStarted = false;
+                games.get(data.code).scores.clear();
+                games.get(data.code).ids.clear();
+                games.get(data.code).ready.clear();
+                games.get(data.code).isStarted = false;
+                games.get(data.code).currentRound = 1;
+                games.get(data.code).currentPick = "";
+                games.get(data.code).roundVotes = 0;
             }
         
         }));

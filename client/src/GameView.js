@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import axios from "axios";
 import { Spotify }  from "react-spotify-embed";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faCopy, faCrown } from '@fortawesome/free-solid-svg-icons';
 
 import spotifyLogo from './img/Spotify.jpeg';
 
@@ -169,18 +169,21 @@ function GameView() {
             <div class="row">
                 <div class="col-md-4 l-section">
                 { isFinished ? 
-                            <>
+                            <div class="lboard">
                                 <h1>Leaderboard</h1>
                                 <hr/>
-                                { leaderboard.map(([player, score]) => (
+                                { leaderboard.map(([player, score], idx) => (
                                     <div class="p-wrapper">
-                                        <p>{player}{player.endsWith('s') ? "'" : "'s"} Score: {score}</p>
+                                        <p>
+                                            { idx == 0 ? <FontAwesomeIcon icon={faCrown} /> : null }
+                                            {player}{player.endsWith('s') ? "'" : "'s"} Score: <span>{score}</span>
+                                        </p>
                                     </div>
                                 )) }
     
     
-                                <button onClick={playAgain} class="p-btn">Play Again</button>
-                            </>
+                                
+                            </div>
                         :
                             <>
                                 <h2>Current Players</h2>
@@ -189,7 +192,7 @@ function GameView() {
                                     if (playerList.length == 1) { return(<p class="wait">Waiting for players...</p>)}
 
                                     return(
-                                        <div class="p-wrapper">
+                                        <div class="p-wrapper"> 
                                         <p class="p-player">{player}</p>
                                             
                                         
@@ -197,7 +200,7 @@ function GameView() {
                                             <>
                                                 <p class="p-score">Score <span>{score}</span> </p>
                                                 <button onClick={() => voteUser(player)} class="v-btn">
-                                                    { votedFor === player ? "Voted For" : "Vote" }
+                                                    { votedFor === player ? "Voted" : "Vote" }
                                                 </button> 
                                                 
                                             </>
@@ -220,46 +223,35 @@ function GameView() {
                         
                     :
                         <>
-                            { isFinished ? null : <button onClick={readyUp} class="p-btn r-btn">Ready</button> }
-                            <h1>Game Code</h1>
-                            <p onClick={copyGameCode}>{code}<FontAwesomeIcon icon={faCopy} /></p>
+                            { isFinished ? 
+                                <button onClick={playAgain} class="p-btn pa-btn">Play Again</button>
+                             : 
+                             <>
+                                <button onClick={readyUp} class="p-btn r-btn">Ready</button>
+                                <h1>Game Code</h1>
+                                <p onClick={copyGameCode}>{code}<FontAwesomeIcon icon={faCopy} /></p>
+                             </>
+                                
+                            }
+                            
                         </>
                         
                     }
                 </div>
                 <div class="col-md-4 r-section">
                     <h1>Guessify</h1>
-                    <h3>
-                        {gameStarted ? "Vote for who the currently queued song belongs to" : "Wait for everyone to join and ready up" }
+                    {gameStarted ? <h3>Vote for who the currently queued song belongs to</h3> 
+                        : 
+                        <>
+                            { isFinished ? <h3>Game is over, thank you for playing</h3> : <h3>Wait for everyone to join and ready up</h3>}
+                        </>
+                        
+                    }
                         
                         
-                    </h3>
                     <img src={spotifyLogo} alt="Spotify Logo" />
                     
-                    { gameStarted ? 
-                    <>
-                        { isFinished ? 
-                            <>
-                                <h1>Leaderboard</h1>
-                                <hr/>
-                                { leaderboard.map(([player, score]) => (
-                                    <div class="p-wrapper">
-                                        <p>{player}{player.endsWith('s') ? "'" : "'s"} Score: {score}</p>
-                                    </div>
-                                )) }
-    
-    
-                                <button onClick={playAgain} class="p-btn">Play Again</button>
-                            </>
-                        :
-                            <>
-                            
-                                
-                            </>
-                        }
-                    </>
-                        
-                    : null }
+                    <br/>
 
                     <button onClick={leaveGame} class="l-btn">Leave Game</button>
                     
