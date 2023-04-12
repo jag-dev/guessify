@@ -15,8 +15,9 @@ This system utilizes the client-server architecture model. In this model, the cl
 
 The following diagram demonstrates this architecture flow while depicting the front-end's nested React component nature. Conditional rendering is utilized within the front-end subcomponents to control UI flow, with each component providing a certain function whether that being communication with an API or collecting data to send as props.
 
+<p align="center">Overall Diagram</p>
 <p align="center">
-    <img src="img/arch.png" style="width: 65vw; border-radius: 3em;">
+    <img src="img/arch.png" width="650">
 </p>
 
 
