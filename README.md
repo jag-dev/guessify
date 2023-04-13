@@ -1,4 +1,5 @@
-<p align="center"><img src="img/guessify.png"></p>
+<p align="center"><img src="other/img/spotify.jpeg" height="100"></p>
+<p align="center"><img src="other/img/guessify.png"></p>
 <p align="center">Authors: James Guiden, Alec Montesano, Owen Conlon</p>
 
 # Introduction
@@ -6,9 +7,7 @@ Guessify is a web-based game application built with React and NodeJS. Users can 
 
 Interfacing with Spotify's services and API allows for optimal user experience and ease of access.
 
-<p align="center">
-    <img src="img/spotify.jpeg" height="250">
-</p>
+<p align="center"><img src="other/img/game.png" height="250"></p>
 
 # System Architecture
 This system utilizes the client-server architecture model. In this model, the client or user typically initiates communication with the server by sending a request for a resource or service. The server then processes the request and sends the requested resource back to the client-side. This model provides a number of benefits, including improved scalability, easier maintenance and management, and enhanced security.
@@ -17,7 +16,7 @@ The following diagram demonstrates this architecture flow while depicting the fr
 
 <p align="center">Overall Diagram</p>
 <p align="center">
-    <img src="img/arch.png" width="650">
+    <img src="other/img/arch.png" width="650">
 </p>
 
 
