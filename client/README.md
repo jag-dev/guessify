@@ -38,7 +38,7 @@ Finally, you will need to install the required package dependencies
 
 
 ## Startup
-How that you have your environment and project structure setup, you are ready to start the front-end
+Now that you have your environment and project structure setup, you are ready to start the front-end
 * Open a terminal and navigate to the client folder
 * Use ```npm start``` to start the project up
 * Navigate to [http://localhost:3000](http://localhost:3000) in order to view it in the browser
