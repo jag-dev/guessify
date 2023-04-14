@@ -10,7 +10,7 @@ Interfacing with Spotify's services and API allows for optimal user experience a
 ## Images
 <p>Below are some images of various screens within the game.</p>
 <p align="center">Splash Screen</p>
-<p align="center"><img src="other/img/main.png" width="850" height="400"></p>
+<p align="center"><img src="other/img/main.png" width="850"></p>
 <p align="center">Playlist Selection</p>
 <p align="center"><img src="other/img/playlists.png" width="1050"></p>
 <p align="center">Game View</p>
