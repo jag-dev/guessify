@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./css/Join.css";
+import "../css/Join.css";
 
-function Join({name, pid, token}) {
+function Join({name, pid, token}) { 
     const nav = useNavigate();
 
     const handleSubmit = (event) => {
@@ -19,13 +18,13 @@ function Join({name, pid, token}) {
         });
     }
     return(<>
-        <div class="container j-container">
+        <div className="container j-container">
             <h1>Enter a Join Code</h1>
             <p>A unique code used to join a specific game</p>
             <form onSubmit={handleSubmit}>
-                <input class="j-input" type="text" name="username"/>
+                <input className="j-input" type="text" name="username"/>
                 <br/>
-                <button class="p-btn j-btn" type="submit">Submit</button>
+                <button className="p-btn j-btn" type="submit">Submit</button>
             </form>
             
 

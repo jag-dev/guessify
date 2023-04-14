@@ -6,10 +6,10 @@ import { Spotify }  from "react-spotify-embed";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faCrown } from '@fortawesome/free-solid-svg-icons';
 
-import spotifyLogo from './img/Spotify.jpeg';
+import spotifyLogo from '../img/Spotify.jpeg';
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./css/GameView.css";
+import "bootstrap/dist/css/bootstrap.min.css"; 
+import "../css/GameView.css";
 
 const socket = io.connect("http://localhost:3001");
 
@@ -17,14 +17,11 @@ function GameView() {
     const nav = useNavigate();
     const loc = useLocation();
     
-    
-    
-    
     // User states
-    const [pid, setPID] = useState(loc.state ? loc.state.playlistId : "")
-    const [token, setToken] = useState(loc.state ? loc.state.token : "")
+    const pid = loc.state ? loc.state.playlistId : ""
+    const token = loc.state ? loc.state.token : ""
+    const name = loc.state ? loc.state.name : ""
     const [code, setCode] = useState(loc.state ? loc.state.gameCode : "")
-    const [name, setName] = useState(loc.state ? loc.state.name : "")
 
     
     // Game states
@@ -38,6 +35,7 @@ function GameView() {
     const [votedFor, setVotedFor] = useState("");
     const [round, setRound] = useState(0);
 
+    // Leave the game
     const leaveGame = () => {
         socket.emit("leave", {name: name, code: code});
         setGameStarted(false);
@@ -52,8 +50,10 @@ function GameView() {
         nav("/");
     }
 
+    // Update player information
     const updatePlayers = () => { if (inGame) { socket.emit("get_players", code); } }
 
+    // Ready up
     const readyUp = () => {
         var rdata = {
             code: code,
@@ -62,6 +62,7 @@ function GameView() {
         socket.emit("is_ready", rdata);
     }
 
+    // Vote for a player
     const voteUser = (user) => {
         if (!hasVoted) {
             setVotedFor(user);
@@ -71,11 +72,13 @@ function GameView() {
         }
     }
 
+    // Hit play again button
     const playAgain = () => {
         socket.emit("leave", {name: name, code: code});
         nav("/");
     }
 
+    // Copy game code to clipboard
     const copyGameCode = async () => {
         try {
           await navigator.clipboard.writeText(code);
@@ -136,7 +139,6 @@ function GameView() {
                 const tracks = response.data.items;
                 const randomTrackIndex = Math.floor(Math.random() * tracks.length);
                 const randomTrackId = tracks[randomTrackIndex].track.id;
-                console.log(`Random track ID: ${randomTrackId}`);
 
                 const pdata = {code: code, name: name, track: randomTrackId}
                 socket.emit("give_track", pdata);
@@ -163,22 +165,23 @@ function GameView() {
             setIsFinished(true);
         });
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [socket]);
 
     if (!loc.state) return <Navigate to="/"/>
     
     return(<>
-        <div class="container-fluid g-container" id="view">
-            <div class="row">
-                <div class="col-md-4 l-section">
+        <div className="container-fluid g-container" id="view">
+            <div className="row">
+                <div className="col-md-4 l-section">
                 { isFinished ? 
-                            <div class="lboard">
+                            <div className="lboard">
                                 <h1>Leaderboard</h1>
                                 <hr/>
                                 { leaderboard.map(([player, score], idx) => (
-                                    <div class="p-wrapper">
+                                    <div key={idx} className="p-wrapper">
                                         <p>
-                                            { idx == 0 ? <FontAwesomeIcon icon={faCrown} /> : null }
+                                            { idx === 0 ? <FontAwesomeIcon icon={faCrown} /> : null }
                                             {player}{player.endsWith('s') ? "'" : "'s"} Score: <span>{score}</span>
                                         </p>
                                     </div>
@@ -191,18 +194,17 @@ function GameView() {
                             <>
                                 <h2>Current Players</h2>
                                 {playerList.map(([player, score]) => {
-                                    if (isFinished) { return(<></>); }
-                                    if (playerList.length == 1) { return(<p class="wait">Waiting for players...</p>)}
+                                    if (isFinished) { return(<></>); } 
+                                    if (playerList.length === 1) { return(<p key={player} className="wait">Waiting for players...</p>)}
 
                                     return(
-                                        <div class="p-wrapper"> 
-                                        <p class="p-player">{player}</p>
+                                        <div key={player} className="p-wrapper"> 
+                                            <p className="p-player">{player}</p>
                                             
-                                        
                                             { gameStarted ? 
                                             <>
-                                                <p class="p-score">Score <span>{score}</span> </p>
-                                                <button onClick={() => voteUser(player)} class="v-btn">
+                                                <p className="p-score">Score <span>{score}</span> </p>
+                                                <button onClick={() => voteUser(player)} className="v-btn">
                                                     { votedFor === player ? "Voted" : "Vote" }
                                                 </button> 
                                                 
@@ -217,7 +219,7 @@ function GameView() {
                     }
 
                 </div>
-                <div class="col-md-4 m-section">
+                <div className="col-md-4 m-section">
                     { gameStarted ? 
                         <>
                             <Spotify link={"https://open.spotify.com/track/" + currentTrack +  ""} />
@@ -227,10 +229,10 @@ function GameView() {
                     :
                         <>
                             { isFinished ? 
-                                <button onClick={playAgain} class="p-btn pa-btn">Play Again</button>
+                                <button onClick={playAgain} className="p-btn pa-btn">Play Again</button>
                              : 
                              <>
-                                <button onClick={readyUp} class="p-btn r-btn">Ready</button>
+                                <button onClick={readyUp} className="p-btn r-btn">Ready</button>
                                 <h1>Game Code</h1>
                                 <p onClick={copyGameCode}>{code}<FontAwesomeIcon icon={faCopy} /></p>
                              </>
@@ -241,7 +243,7 @@ function GameView() {
                         
                     }
                 </div>
-                <div class="col-md-4 r-section">
+                <div className="col-md-4 r-section">
                     <h1>Guessify</h1>
                     {gameStarted ? <h3>Vote for who the currently queued song belongs to</h3> 
                         : 
@@ -256,7 +258,7 @@ function GameView() {
                     
                     <br/>
 
-                    <button onClick={leaveGame} class="l-btn">Leave Game</button>
+                    <button onClick={leaveGame} className="l-btn">Leave Game</button>
                     
                 </div>
             </div>

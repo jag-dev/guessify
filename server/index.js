@@ -181,8 +181,8 @@ io.on("connection", (socket) => {
             
             // if game has no players in it (DELETE GAME)
             if (games.get(code).ids.size <= 0) {
-                games.delete(data.code);
-                console.log(`[${(new Date()).toLocaleString()}][INFO] Game instance "${data.code}" deleted (No players)`);
+                games.delete(code);
+                console.log(`[${(new Date()).toLocaleString()}][INFO] Game instance "${code}" deleted (No players)`);
             }
         
         }));

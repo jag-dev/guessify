@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./css/Create.css";
-
-
+import "../css/Create.css";
 
 function Create({name, pid, token}) {
     const [maxRounds, setMaxRounds] = useState('');
@@ -74,8 +72,8 @@ function Create({name, pid, token}) {
               min="1"
               max="10"
               placeholder="0"
-              value={maxPlayers}
-              onChange={(event) => setMaxPlayers(event.target.value)}
+              value={maxPlayers} 
+              onChange={(event) => setMaxPlayers(event.target.value)} 
               required
             />
           </div>

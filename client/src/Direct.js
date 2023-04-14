@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import App from './App';
-import GameView from './GameView';
+import App from './components/App'; 
+import GameView from './components/GameView';
 
 const Direct = () => {
     return(
@@ -12,8 +12,7 @@ const Direct = () => {
             </Routes>
         </BrowserRouter>
     );
-    
-    
+     
 }
 
 export default Direct;
