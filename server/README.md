@@ -21,3 +21,6 @@ Now that you have your environment and project structure setup, you are ready to
 * Open a terminal and navigate to the server folder
 * Use ```npm start``` to start the project up
 * The server is now active and listening for communication from the client-side
+
+### Example Console Output
+<p align="center"><img src="../other/img/console.png"></p>
